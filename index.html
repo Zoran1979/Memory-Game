@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title> Memory Game Zoran Savic </title>
+    	<link href="css/custom.css" rel="stylesheet">
+        <script
+         src="https://code.jquery.com/jquery-3.3.1.min.js"
+         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+         crossorigin="anonymous"></script>
+    </head>
+    <body>
+    	<div class="title">
+    		<h1>Zoran's Memory game</h1>
+    		<span id="counter"></span>
+    		<div class="clear"></div>
+    	</div>
+        <div class="wrapper">
+        	<div id="winMessage" style="display:none">
+        		<h1>You won!!!</h1>
+        		<button id="playAgain">Play again</button>
+        	</div>
+        	
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+		  	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	<section class="flag unmatched">
+		    	<div class="card">
+		      		<figure class="front"></figure>
+		      		<figure class="back"></figure>
+		    	</div>
+		  	</section>
+        	
+        </div>
+    	<script type="text/javascript"> 
+    		$(function(){
+              var app = {
+	              flags: ['arg', 'arg', 'bel', 'bel', 'bra', 'bra', 'can', 'can', 'gbr', 'gbr', 'usa', 'usa'],
+	              counter: 0,
+	              first: true,
+	              init: function () {
+	              	
+	              	$("#winMessage").hide();
+	              	app.shuffle();
+	              	app.counter = 0;
+	              	
+	              	
+	              },
+	              shuffle: function () {
+	              	var random =0;
+	              	var temp=0;
+	              	for ( i= 1; i<app.flags.length; i++){
+	 					random =Math.round(Math.random() * i);
+	 					temp = app.flags[i];
+	 					app.flags[i]= app.flags[random];
+	 					app.flags[random]=temp;
+	 					
+	              	}
+	              	app.assignFlags();
+
+
+	              },
+	              assignFlags:function (){
+	             	$(".flag").each(function(index){
+	             		$(this).addClass('unmatched').find('.card').removeClass('flipped');
+	             		//$(this).attr('data-flag-value', app.flags[index]);
+	       				$(this).find('.back').html('<img src="flags/' + app.flags[index] + '.png">');
+	 				});
+
+	 				if(app.first) {
+	 					app.clickHandlers();
+	 				}
+	 				
+	              },
+	              clickHandlers: function(){
+	              	$(".flag").on("click",function(){
+	              		if($(this).hasClass('unmatched')) {
+	              			//$(this).html("<p>" +$(this).data("flagValue") + "</p>").addClass("selected");
+	              			$(this).find('.card').toggleClass('flipped');
+	              			$(this).addClass('selected');
+	              			app.counter++;
+	              			$('#counter').html(app.counter);
+	              			app.checkMatch();
+	              		}
+	              	})
+	              },
+	              checkMatch:function(){
+	              	if ($(".selected").length ===2){
+	              		if ( $(".selected").first().find('.back img').attr("src") === $(".selected").last().find('.back img').attr("src") ) {
+	              			$(".selected").each(function(){
+	              				$(this).removeClass("unmatched");
+	              			});
+	              			$(".selected").each(function(){
+		              			$(this).removeClass("selected");
+		              		});
+		              		app.checkWin();
+	              		}  else {
+	              			setTimeout(function(){
+	              				$(".selected").each(function(){
+									$(this).removeClass("selected");
+									$(this).find('.card').toggleClass("flipped");
+	              				})
+	              			}, 1000);
+	              		}
+	              		
+	              	}
+	              },
+	              checkWin : function (){
+	              	if ($(".unmatched").length === 0){
+	              		$("#winMessage").show();
+	              	}
+	              }
+              };
+              app.init(true);
+              $('body').on('click', '#playAgain', function(){
+              	app.first = false;
+              	app.init();
+              })
+    		});
+    	</script>
+    </body>
+</html>
