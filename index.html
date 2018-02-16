@@ -10,13 +10,13 @@
     </head>
     <body>
     	<div class="title">
-    		<h1>Zoran's Memory game</h1>
+    		<h1>Zoran's Memory Game</h1>
     		<span id="counter"></span>
     		<div class="clear"></div>
     	</div>
         <div class="wrapper">
         	<div id="winMessage" style="display:none">
-        		<h1>You won!!!</h1>
+        		<h1>Game Solved</h1>
         		<button id="playAgain">Play again</button>
         	</div>
         	
@@ -97,7 +97,7 @@
     	<script type="text/javascript"> 
     		$(function(){
               var app = {
-	              flags: ['arg', 'arg', 'bel', 'bel', 'bra', 'bra', 'can', 'can', 'gbr', 'gbr', 'usa', 'usa'],
+	              flags: ['ger', 'ger', 'bel', 'bel', 'jpn', 'jpn', 'can', 'can', 'gbr', 'gbr', 'fra', 'fra'],
 	              counter: 0,
 	              first: true,
 	              init: function () {
@@ -136,7 +136,7 @@
 	              },
 	              clickHandlers: function(){
 	              	$(".flag").on("click",function(){
-	              		if($(this).hasClass('unmatched')) {
+	              		if($(this).hasClass('unmatched') && $(".selected").length < 2) {
 	              			//$(this).html("<p>" +$(this).data("flagValue") + "</p>").addClass("selected");
 	              			$(this).find('.card').toggleClass('flipped');
 	              			$(this).addClass('selected');
